@@ -11,5 +11,9 @@ Requirements
 ==
 Python 2.7  
 wxPython  
-[Microsoft Visual C++ 2010 Redistributable Package (x86)](http://www.microsoft.com/en-us/download/details.aspx?id=5555)  
+[Microsoft Visual C++ 2010 Redistributable Package (x64)](http://www.microsoft.com/en-us/download/details.aspx?id=14632)  
 [channel_data.json](https://github.com/shayConcepts/LaziiTV/wiki/channel_data.json-Sample)
+
+LaziiTV Configure
+==
+The other application that is apart of LaziiTV is [LaziiTV Configure](https://github.com/shayConcepts/LaziiTV-Configure)

@@ -1,0 +1,14 @@
+{
+  "play_pause_bind": 32,
+  "stop_bind": 83,
+  "refresh_bind": 82,
+  "channel_up_bind": 81,
+  "channel_down_bind": 65,
+  "change_mode_bind": 77,
+  "skip_forward_bind": 69,
+  "skip_backward_bind": 87,
+  "quit_bind": 27,
+  "info_bind": 73,
+  "change_display": 68,
+  "previous_video": 84
+}

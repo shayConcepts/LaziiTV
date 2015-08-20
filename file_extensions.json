@@ -1,0 +1,13 @@
+{
+    "extensions":[
+        ".mp4",
+        ".avi",
+        ".mkv",
+        ".mpeg",
+        ".wmv",
+        ".wma",
+        ".mov",
+        ".3gp",
+        ".flv"
+    ]
+}

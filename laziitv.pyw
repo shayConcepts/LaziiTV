@@ -30,6 +30,7 @@ current_video_name = ""  # The name of the current video playing
 current_video_path = None  # Path and file name of current video playing
 previous_video_path = None  # Path and file name of previously played video
 current_display = 0  # Current montior LaziiTV is on
+user_stop = False  # The user has forced stopped player
 
 # List containing the names of the modes in order from channels.xml
 mode_names = []
@@ -228,7 +229,8 @@ class Player(wx.Frame):
 
     def check_video_finished(self, event):
         """ If a video has ended, start a new one """
-        if self.player.get_position() >= 0.9999:
+        global user_stop
+        if self.player.is_playing() == 0 and user_stop is False:
             self.refresh_channel()
 
     def on_mouse_wheel(self, event):
@@ -263,11 +265,15 @@ class Player(wx.Frame):
 
     def play_pause(self):
         """ Play/Pause video """
+        global user_stop
+        user_stop = True
         print("Pause/Play video")
         self.player.pause()
 
     def video_stop(self):
         """ Stops video """
+        global user_stop
+        user_stop = True
         print("Stop video")
         self.player.stop()
 
@@ -275,8 +281,9 @@ class Player(wx.Frame):
         """ Refreshes channel """
         global current_mode
         global current_channel
-
+        global user_stop
         print("Refresh Channel")
+        user_stop = False
         self.play(current_mode, current_channel)
 
     def channel_up(self):

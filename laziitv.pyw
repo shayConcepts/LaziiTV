@@ -1,5 +1,5 @@
 # ---------------------
-# LaziiTV v1.0.0
+# LaziiTV v1.0.1
 # http://shayConcepts.com
 # Andrew Shay
 # ---------------------
@@ -30,7 +30,7 @@ current_video_name = ""  # The name of the current video playing
 current_video_path = None  # Path and file name of current video playing
 previous_video_path = None  # Path and file name of previously played video
 current_display = 0  # Current montior LaziiTV is on
-user_stop = False  # The user has forced stopped player
+user_stop = True  # The user has forced stopped player
 
 # List containing the names of the modes in order from channels.xml
 mode_names = []
@@ -181,7 +181,7 @@ class Player(wx.Frame):
         # Check when video has finished
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.check_video_finished, self.timer)
-        self.timer.Start(milliseconds=400, oneShot=wx.TIMER_CONTINUOUS)
+        self.timer.Start(milliseconds=1000, oneShot=wx.TIMER_CONTINUOUS)
 
     def load_settings(self):
         global key_bindings, mode_names, channel_names, video_data
@@ -231,6 +231,7 @@ class Player(wx.Frame):
         """ If a video has ended, start a new one """
         global user_stop
         if self.player.is_playing() == 0 and user_stop is False:
+            user_stop = True
             self.refresh_channel()
 
     def on_mouse_wheel(self, event):
@@ -266,7 +267,10 @@ class Player(wx.Frame):
     def play_pause(self):
         """ Play/Pause video """
         global user_stop
-        user_stop = True
+        if self.player.is_playing():
+            user_stop = True
+        else:
+            user_stop = False
         print("Pause/Play video")
         self.player.pause()
 
@@ -527,6 +531,7 @@ class Player(wx.Frame):
         """
         global current_video_path
         global previous_video_path
+        global user_stop
 
         previous_video_path = current_video_path
         current_video_path = video_path
@@ -541,12 +546,13 @@ class Player(wx.Frame):
 
         try:
             self.on_play(None)  # This also plays a file
+            user_stop = False
         except:
             print "Cannot PLAY"
 
     def play(self, mode, channel):
         """ Plays a specific mode and channel """
-        global video_data
+        global video_data, user_stop
 
         try:
             # Pick a random folder in a channel

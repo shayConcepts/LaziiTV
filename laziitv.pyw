@@ -10,10 +10,10 @@ import vlc
 
 # import standard libraries
 import os
-import time
-import thread
 import sys
+import time
 import random
+import thread
 
 import load_bindings
 import load_channels

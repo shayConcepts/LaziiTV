@@ -5,8 +5,8 @@
 # ---------------------
 
 # import external libraries
-import wx  # 2.8
 import vlc
+import wx  # 2.8
 
 # import standard libraries
 import os
@@ -29,7 +29,7 @@ current_channel = 0  # The current channel that is playing
 current_video_name = ""  # The name of the current video playing
 current_video_path = None  # Path and file name of current video playing
 previous_video_path = None  # Path and file name of previously played video
-current_display = 0  # Current montior LaziiTV is on
+current_display = 0  # Current monitor LaziiTV is on
 user_stop = True  # The user has forced stopped player
 
 # List containing the names of the modes in order from channels.xml
@@ -47,8 +47,8 @@ class PopUpWin(wx.Frame):
         style = (wx.CLIP_CHILDREN | wx.STAY_ON_TOP |
                  wx.NO_BORDER | wx.FRAME_SHAPED)
         wx.Frame.__init__(self, None, title='LaziiTV', style=style)
-        dw, dh = wx.DisplaySize()  # Get dimesions of screen
-        self.SetTransparent(200)  # Set transparecy of popup window
+        dw, dh = wx.DisplaySize()  # Get dimensions of screen
+        self.SetTransparent(200)  # Set transparency of popup window
 
     def set_text(self, text):
         '''
@@ -86,7 +86,7 @@ class PopUpWin(wx.Frame):
 
         dc.SelectObject(bmp)
         dc.Clear()
-        dc.DrawText(text, (w-tw)/2,  (h-th)/2)
+        dc.DrawText(text, (w - tw) / 2, (h - th) / 2)
         dc.SelectObject(wx.NullBitmap)
         wx.StaticBitmap(self, -1, bmp)
 
@@ -100,7 +100,9 @@ class PopUpWin(wx.Frame):
         self.Show()
 
     def hide(self):
-        ''' Hides the popup window'''
+        """
+        Hides the popup window
+        """
         self.Destroy()
 
 
@@ -117,7 +119,7 @@ class Player(wx.Frame):
         wx.Frame.__init__(self, None, 2, title,
                           pos=wx.DefaultPosition,
                           size=(500, 500),
-                          style = wx.DEFAULT_FRAME_STYLE & ~wx.CAPTION)
+                          style=wx.DEFAULT_FRAME_STYLE & ~wx.CAPTION)
         # The DEFAULT_FRAME STYLE & CAPTION from above makes it full screen,
         # covering taskbar too!
 
@@ -132,7 +134,7 @@ class Player(wx.Frame):
         self.videopanel = wx.Panel(self, -1)
         self.videopanel.SetBackgroundColour(wx.BLACK)
 
-        # Put everything togheter
+        # Put everything together
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.videopanel, 1, flag=wx.EXPAND)
         self.SetSizer(sizer)
@@ -144,7 +146,7 @@ class Player(wx.Frame):
         # Create the player
         self.player = self.Instance.media_player_new()
 
-        dw, dh = wx.DisplaySize()  # Get dimesions of screen
+        dw, dh = wx.DisplaySize()  # Get dimensions of screen
 
         # Captures key presses
         # Why create cap_panel? When the popup appears, videopanel loses focus
@@ -155,7 +157,7 @@ class Player(wx.Frame):
         # receives the focus. It is made the size of the screen to
         # capture key presses as well.
 
-        self.cap_panel = wx.Panel(self.videopanel, size=((dw, dh)))
+        self.cap_panel = wx.Panel(self.videopanel, size=(dw, dh))
 
         # Listen for key presses
         self.cap_panel.Bind(wx.EVT_KEY_UP, self.on_key_press)
@@ -167,7 +169,7 @@ class Player(wx.Frame):
         self.cap_panel.Bind(wx.EVT_MIDDLE_DOWN, self.on_mouse_middle)
         self.cap_panel.Bind(wx.EVT_MOUSEWHEEL, self.on_mouse_wheel)
 
-        #self.ShowFullScreen(True)
+        # self.ShowFullScreen(True)
         self.Maximize()  # Use this
 
         # Hides cursor
@@ -231,14 +233,22 @@ class Player(wx.Frame):
                                   correctly formatted")
 
     def check_video_finished(self, event):
-        """ If a video has ended, start a new one """
+        """
+        If a video has ended, start a new one
+        :param event:
+        """
+
         global user_stop
         if self.player.is_playing() == 0 and user_stop is False:
             user_stop = True
             self.refresh_channel()
 
     def on_mouse_wheel(self, event):
-        """ Action when scroll wheel is scrolled """
+        """
+        Action when scroll wheel is scrolled
+        :param event:
+        """
+
         if event.GetWheelRotation() > 0:
             self.play_pause()
         elif event.GetWheelRotation() < 0:
@@ -247,28 +257,45 @@ class Player(wx.Frame):
             event.Skip()
 
     def on_mouse_left(self, event):
-        """ Action on left click """
+        """
+        Action on left click
+        :param event:
+        """
+
         self.channel_up()
         event.Skip()
 
     def on_mouse_leftd(self, event):
-        """ Action on double left click """
+        """
+        Action on double left click
+        :param event:
+        """
+
         self.channel_down()
         self.channel_down()
         event.Skip()
 
     def on_mouse_right(self, event):
-        """ Action on right click """
+        """
+        Action on right click
+        :param event:
+        """
+
         self.change_mode()
         event.Skip()
 
     def on_mouse_middle(self, event):
-        """ Action on middle click """
+        """
+        Action on middle click
+        :param event:
+        """
+
         self.refresh_channel()
         event.Skip()
 
     def play_pause(self):
         """ Play/Pause video """
+
         global user_stop
         if self.player.is_playing():
             user_stop = True
@@ -279,6 +306,7 @@ class Player(wx.Frame):
 
     def video_stop(self):
         """ Stops video """
+
         global user_stop
         user_stop = True
         print("Stop video")
@@ -286,6 +314,7 @@ class Player(wx.Frame):
 
     def refresh_channel(self):
         """ Refreshes channel """
+
         global current_mode
         global current_channel
         global user_stop
@@ -295,6 +324,7 @@ class Player(wx.Frame):
 
     def channel_up(self):
         """ Goes up one channel """
+
         global current_mode
         global current_channel
         global video_data
@@ -309,6 +339,7 @@ class Player(wx.Frame):
 
     def channel_down(self):
         """ Go down one channel """
+
         global current_mode
         global current_channel
         global video_data
@@ -323,6 +354,7 @@ class Player(wx.Frame):
 
     def change_mode(self):
         """ Changes mode """
+
         global current_mode
         global current_channel
         global video_data
@@ -338,7 +370,10 @@ class Player(wx.Frame):
         self.play(current_mode, 0)
 
     def on_key_press(self, event):
-        """ Perform action on certain key presses """
+        """
+        Perform action on certain key presses
+        :param event:
+        """
 
         global current_mode
         global current_channel
@@ -386,10 +421,10 @@ class Player(wx.Frame):
             print "Go back 30 seconds"
 
             current_time = self.player.get_time()  # ms
-            current_time = current_time / 1000  # seconds
+            current_time /= 1000  # seconds
 
             new_time = current_time - 30
-            new_time = new_time * 1000  # back to ms
+            new_time *= 1000  # back to ms
 
             if new_time < 0:
                 self.player.set_time(0)
@@ -401,10 +436,10 @@ class Player(wx.Frame):
             print("Skip ahead 30 seconds")
 
             current_time = self.player.get_time()  # ms
-            current_time = current_time / 1000  # seconds
+            current_time /= 1000  # seconds
 
             new_time = current_time + 30
-            new_time = new_time * 1000  # back to ms
+            new_time *= 1000  # back to ms
 
             if new_time > self.player.get_length():
                 self.play(current_mode, current_channel)
@@ -423,8 +458,6 @@ class Player(wx.Frame):
             self.Maximize(False)
             self.SetPosition((new_dim[0], new_dim[1]))
             self.Maximize(True)
-
-
 
         # Load previous video
         elif keycode == key_bindings["previous_video"]:
@@ -451,20 +484,30 @@ class Player(wx.Frame):
             event.Skip()
 
     def on_exit(self, evt):
-        """ Closes the window. """
+        """
+        Closes the window
+        :param evt:
+        """
+
         self.Close()
 
     def on_play(self, evt):
-        """ Toggle the status to Play/Pause. """
+        """
+        Toggle the status to Play/Pause
+        :param evt:
+        """
 
         if self.player.play() == -1:
             print("Cannot play video")
             self.error_dialog("Unable to play current file")
 
-    def error_dialog(self, errormessage):
-        """ Display error message """
+    def error_dialog(self, err):
+        """
+        Display error message
+        :param err:
+        """
 
-        wx.MessageBox(errormessage, 'Error',
+        wx.MessageBox(err, 'Error',
                       wx.OK | wx.ICON_ERROR)
         sys.exit(0)
 
@@ -472,12 +515,12 @@ class Player(wx.Frame):
         """
         Returns list of sub directories of a given path
 
-        Keyword arguments:
-        dir_path -- String. Path to check for sub directories
-
-        Returns:
-        List of sub directories
+        :param dir_path: Path to check for sub directories
+        :type dir_path: string
+        :return: List of sub directories
+        :rtype: list
         """
+
         sub_dirs = []
         for f in listdir(dir_path):
             current_path = join(dir_path, f)
@@ -485,23 +528,22 @@ class Player(wx.Frame):
                 sub_dirs.append(current_path)
         return sub_dirs
 
-    def check_file_extension(self, filepath):
+    def check_file_extension(self, file_path):
         """
         Checks that the extension of the video file is an approved extension
 
-        Keyword arguments:
-        filepath -- String.  The path and name of the file
-
-        Returns:
-        True -- The extension is allowed
-        False -- The extension is not allowed
+        :param file_path: Path and name of file
+        :type file_path: string
+        :return: If the extension is allowed
+        :rtype: boolean
         """
+
         global file_extensions
 
-        if filepath == "":
+        if file_path == "":
             return False
 
-        extension = os.path.splitext(filepath)[-1]
+        extension = os.path.splitext(file_path)[-1]
         extension = extension.lower()
         if extension in file_extensions:
             return True
@@ -510,13 +552,11 @@ class Player(wx.Frame):
 
     def get_files_from_dir(self, dir_path):
         """
-        Returns list of files fromthe given directory
-
-        Keyword arguments:
-        dir_path -- String.  Path to get list of files from
-
-        Returns:
-        List of files from given directory
+        Returns list of files from the given directory
+        :param dir_path: Path to get list of files from
+        :type dir_path: string
+        :return: List of files from given directory
+        :rtype: list
         """
 
         all_files = []
@@ -529,10 +569,10 @@ class Player(wx.Frame):
     def load_vlc_media(self, video_path):
         """
         Loads video into VLC and starts media
-
-        Keyword arguments:
-        video_path -- String. Path to video file to play
+        :param video_path: Path to video file to play
+        :type video_path: string
         """
+
         global current_video_path
         global previous_video_path
         global user_stop
@@ -540,19 +580,19 @@ class Player(wx.Frame):
         previous_video_path = current_video_path
         current_video_path = video_path
         self.Media = self.Instance.media_new(unicode(
-                                             os.path.join(video_path)))
+            os.path.join(video_path)))
 
         try:
             self.player.set_media(self.Media)
         except:
-            print "Failed video"
+            print("Failed video")
         self.player.set_hwnd(self.videopanel.GetHandle())
 
         try:
             self.on_play(None)  # This also plays a file
             user_stop = False
         except:
-            print "Cannot PLAY"
+            print("Cannot PLAY")
 
     def play(self, mode, channel):
         """ Plays a specific mode and channel """
@@ -560,7 +600,7 @@ class Player(wx.Frame):
 
         try:
             # Pick a random folder in a channel
-            random_folder = random.randint(0, len(video_data[mode][channel])-1)
+            random_folder = random.randint(0, len(video_data[mode][channel]) - 1)
             # The path of that folder
             dir_path = video_data[mode][channel][random_folder]
 
@@ -587,13 +627,13 @@ class Player(wx.Frame):
             tries = 0  # After 100,000 tries, quit
             while not self.check_file_extension(random_video):
                 # Generate a random number to pick a video file
-                random_number = random.randint(0, len(all_videos)-1)
+                random_number = random.randint(0, len(all_videos) - 1)
 
                 # Grab the random video file
                 random_video = all_videos[random_number]
                 tries += 1
                 if tries == 100000:
-                    msg = "Could not find video with valid extension"\
+                    msg = "Could not find video with valid extension" \
                           " after 100,000 attempts"
                     self.error_dialog(msg)
                     sys.exit(1)
@@ -614,19 +654,19 @@ class Player(wx.Frame):
             print str(e)
             self.error_dialog("channels_data.json is not properly constructed")
 
-    def show_msg(self, text_dis, is_temp=False):
+    def show_msg(self, text, temp=False):
         """
         Shows the popup window
-
-        Keyword arguments:
-        text_dis -- String. Message to display
-        is_temp -- Boolean. If this is a temporary message
+        :param text: Message to display
+        :type text: string
+        :param temp: If this is a temporary message
+        :type temp: boolean
         """
 
         # If a message wasn't sent in, reuse old message
         # Else set the new global message
-        if text_dis is not None and is_temp is False:
-            self.msg_text = text_dis
+        if text is not None and temp is False:
+            self.msg_text = text
 
         try:
             self.msg_win.hide()  # Hide current msg_win
@@ -634,8 +674,8 @@ class Player(wx.Frame):
             pass
 
         self.msg_win = PopUpWin()  # Make a new one
-        if is_temp is True:
-            self.msg_win.set_text(text_dis)  # Set its text and display
+        if temp is True:
+            self.msg_win.set_text(text)  # Set its text and display
         else:
             self.msg_win.set_text(self.msg_text)  # Set its text and display
         # Thread to hide
@@ -644,7 +684,12 @@ class Player(wx.Frame):
 
 
 def hide_msg_thread(main_player, msg_win):
-    """ Hides the popup message window """
+    """
+    Hides the popup message window
+    :param main_player:
+    :param msg_win:
+    """
+
     time.sleep(3)
 
     try:

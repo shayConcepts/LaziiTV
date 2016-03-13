@@ -4,11 +4,9 @@
 # Andrew Shay
 # ---------------------
 
-# import external libraries
 import vlc
 import wx  # 2.8
 
-# import standard libraries
 import os
 import sys
 import time
@@ -51,14 +49,14 @@ class PopUpWin(wx.Frame):
 
     def set_text(self, text):
         """
+        Sets the text of the popup window and displays it
+
         self.defaultstyle = wx.richtext.RichTextAttr()
         self.GetStyle(self.GetInsertionPoint(), self.defaultstyle)
         self.defaultsize = self.defaultstyle.GetFont().GetPointSize()
 
         :param text:
         """
-
-        ''' Sets the text of the popup window and displays it'''
 
         current_dim = wx.Display.GetGeometry(wx.Display(current_display))
         display_width = current_dim[2]

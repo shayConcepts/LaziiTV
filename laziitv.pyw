@@ -110,6 +110,7 @@ class Player(wx.Frame):
     msg_text = ""  # The text for the popup message
 
     def __init__(self, title):
+        global current_display
 
         self.load_settings()
 
@@ -166,13 +167,15 @@ class Player(wx.Frame):
         self.cap_panel.Bind(wx.EVT_MIDDLE_DOWN, self.on_mouse_middle)
         self.cap_panel.Bind(wx.EVT_MOUSEWHEEL, self.on_mouse_wheel)
 
-        # self.ShowFullScreen(True)
+        #self.ShowFullScreen(True)
         self.Maximize()  # Use this
 
         # Hides cursor
         self.cursor = wx.StockCursor(wx.CURSOR_BLANK)
         # set the cursor for the window
         self.SetCursor(self.cursor)
+
+        current_display = wx.Display.GetFromWindow(self)
 
         # Play the first channel on the first mode
         print("Playing first channel on first mode")
@@ -252,7 +255,7 @@ class Player(wx.Frame):
         """ Action on double left click """
         self.channel_down()
         self.channel_down()
-        event.Skip
+        event.Skip()
 
     def on_mouse_right(self, event):
         """ Action on right click """
@@ -410,17 +413,18 @@ class Player(wx.Frame):
 
         # Changes the display that LaziiTV appears on
         elif keycode == key_bindings["change_display"]:  # D
-            current_dim = wx.Display.GetGeometry(wx.Display(current_display))
-            shift_right = current_dim[0] + current_dim[2]
-
-            self.Maximize(False)
-            self.SetPosition((shift_right, 0))
-            self.Maximize(True)
-
             current_display += 1
             # Reset monitor if you go passed the max count
             if current_display >= wx.Display.GetCount():
                 current_display = 0
+
+            new_dim = wx.Display.GetGeometry(wx.Display(current_display))
+
+            self.Maximize(False)
+            self.SetPosition((new_dim[0], new_dim[1]))
+            self.Maximize(True)
+
+
 
         # Load previous video
         elif keycode == key_bindings["previous_video"]:

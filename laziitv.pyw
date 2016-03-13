@@ -47,15 +47,16 @@ class PopUpWin(wx.Frame):
         style = (wx.CLIP_CHILDREN | wx.STAY_ON_TOP |
                  wx.NO_BORDER | wx.FRAME_SHAPED)
         wx.Frame.__init__(self, None, title='LaziiTV', style=style)
-        dw, dh = wx.DisplaySize()  # Get dimensions of screen
         self.SetTransparent(200)  # Set transparency of popup window
 
     def set_text(self, text):
-        '''
+        """
         self.defaultstyle = wx.richtext.RichTextAttr()
         self.GetStyle(self.GetInsertionPoint(), self.defaultstyle)
         self.defaultsize = self.defaultstyle.GetFont().GetPointSize()
-        '''
+
+        :param text:
+        """
 
         ''' Sets the text of the popup window and displays it'''
 
@@ -121,7 +122,7 @@ class Player(wx.Frame):
                           size=(500, 500),
                           style=wx.DEFAULT_FRAME_STYLE & ~wx.CAPTION)
         # The DEFAULT_FRAME STYLE & CAPTION from above makes it full screen,
-        # covering taskbar too!
+        # covering task bar too!
 
         favicon = wx.Icon('icon_big.ico', wx.BITMAP_TYPE_ANY)
         wx.Frame.SetIcon(self, favicon)
@@ -198,37 +199,37 @@ class Player(wx.Frame):
             channel_names = load_channels.channel_names
             mode_names = load_channels.mode_names
 
-        except Exception, e:
+        except Exception as e:
             error_msg = str(e)
             if "No such file" in error_msg:
-                print str(e)
+                print(str(e))
                 self.error_dialog("No channel data. Create it with LaziiTV Configure.")
             else:
-                print str(e)
+                print(str(e))
                 self.error_dialog("channel_data.json is not correctly\
                                   constructed")
 
         try:
             key_bindings = load_bindings.load_key_bindings()
-        except Exception, e:
+        except Exception as e:
             error_msg = str(e)
             if "No such file" in error_msg:
-                print str(e)
+                print(str(e))
                 self.error_dialog("key_bindings.json does not exist")
             else:
-                print str(e)
+                print(str(e))
                 self.error_dialog("key_bindings.json is not\
                                   correctly formatted")
 
         try:
             file_extensions = load_extensions.load_file_extensions()
-        except Exception, e:
+        except Exception as e:
             error_msg = str(e)
             if "No such file" in error_msg:
-                print str(e)
+                print(str(e))
                 self.error_dialog("file_extensions.json does not exist")
             else:
-                print str(e)
+                print(str(e))
                 self.error_dialog("file_extensions.json is not\
                                   correctly formatted")
 
@@ -384,7 +385,7 @@ class Player(wx.Frame):
         global previous_video_path
 
         keycode = event.GetKeyCode()
-        print keycode  # DELETE
+        print(keycode)  # DELETE
 
         # Refresh channel
         if keycode == key_bindings["refresh_bind"]:  # R
@@ -412,13 +413,13 @@ class Player(wx.Frame):
 
         # Close program
         elif keycode == key_bindings["quit_bind"]:
-            print "Close program"
+            print("Close program")
             self.video_stop()
             sys.exit(0)
 
         # Go back 30 seconds
         elif keycode == key_bindings["skip_backward_bind"]:  # W
-            print "Go back 30 seconds"
+            print("Go back 30 seconds")
 
             current_time = self.player.get_time()  # ms
             current_time /= 1000  # seconds
@@ -471,7 +472,7 @@ class Player(wx.Frame):
                 file_name = os.path.splitext(file_name)[-2]
                 self.load_vlc_media(previous_video_path)
                 self.show_msg(file_name, True)
-                print previous_video_path
+                print(previous_video_path)
             else:
                 self.show_msg("There is no previous video to play", True)
 
@@ -501,7 +502,8 @@ class Player(wx.Frame):
             print("Cannot play video")
             self.error_dialog("Unable to play current file")
 
-    def error_dialog(self, err):
+    @staticmethod
+    def error_dialog(err):
         """
         Display error message
         :param err:
@@ -511,7 +513,8 @@ class Player(wx.Frame):
                       wx.OK | wx.ICON_ERROR)
         sys.exit(0)
 
-    def get_sub_dirs(self, dir_path):
+    @staticmethod
+    def get_sub_dirs(dir_path):
         """
         Returns list of sub directories of a given path
 
@@ -528,7 +531,8 @@ class Player(wx.Frame):
                 sub_dirs.append(current_path)
         return sub_dirs
 
-    def check_file_extension(self, file_path):
+    @staticmethod
+    def check_file_extension(file_path):
         """
         Checks that the extension of the video file is an approved extension
 
@@ -550,7 +554,8 @@ class Player(wx.Frame):
         else:
             return False
 
-    def get_files_from_dir(self, dir_path):
+    @staticmethod
+    def get_files_from_dir(dir_path):
         """
         Returns list of files from the given directory
         :param dir_path: Path to get list of files from
@@ -595,7 +600,12 @@ class Player(wx.Frame):
             print("Cannot PLAY")
 
     def play(self, mode, channel):
-        """ Plays a specific mode and channel """
+        """
+        Plays a specific mode and channel
+        :param mode:
+        :param channel:
+        """
+
         global video_data, user_stop
 
         try:
@@ -650,15 +660,15 @@ class Player(wx.Frame):
                           " - " + file_name, False)
             print(random_video.encode('ascii', 'ignore'))
 
-        except Exception, e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             self.error_dialog("channels_data.json is not properly constructed")
 
     def show_msg(self, text, temp=False):
         """
         Shows the popup window
         :param text: Message to display
-        :type text: string
+        :type text: string OR None
         :param temp: If this is a temporary message
         :type temp: boolean
         """

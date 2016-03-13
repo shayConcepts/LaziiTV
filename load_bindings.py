@@ -12,20 +12,15 @@ def load_key_bindings():
     """
     Loads settings from key_bindings.json
 
-    Returns
-    key_bindings -- Dict. All key bindings
+    :return: All key bindings
+    :rtype: dict
     """
 
-    print "Loading Key Bindings"
+    print("Loading Key Bindings")
 
     json_string = open("key_bindings.json", "r").read()
     key_bindings = json.loads(json_string)
 
-    print "\tSuccess -- Key Bindings Loaded"
+    print("\tSuccess -- Key Bindings Loaded")
 
     return key_bindings
-
-
-if __name__ == "__main__":
-    key_bindings = load_key_bindings()
-    print(key_bindings)

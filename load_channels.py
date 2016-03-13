@@ -47,9 +47,10 @@ def load_mode_channel_names(channel_json):
     """
     Loads modes and channels names
 
-    Keyword arguments:
-    channel_json -- String. The channel json
+    :param channel_json: Channel json
+    :type channel_json: dict
     """
+
     global mode_names, channel_names
 
     print("\tLoading Mode Channel Names")
@@ -58,11 +59,7 @@ def load_mode_channel_names(channel_json):
         # mode is a dict
         mode_name = mode.keys()[0]
         mode_names.append(mode_name)
-
-        temp_channels = []
-        for channel in mode[mode_name]:
-            channel_name = channel.keys()[0]
-            temp_channels.append(channel_name)
+        temp_channels = [channel.keys()[0] for channel in mode[mode_name]]
         channel_names.append(temp_channels)
 
     print("\tSuccess")
@@ -72,9 +69,10 @@ def load_folders(channel_json):
     """
     Reads in the folders
 
-    Keyword arguments:
-    channel_json -- String. The channel json
+    :param channel_json: Channel json
+    :type channel_json: dict
     """
+
     global mode_names, channel_names, video_data
 
     print("\tLoading Folders")
@@ -85,13 +83,9 @@ def load_folders(channel_json):
         mode_names.append(mode_name)
 
         for channel in mode[mode_name]:
-            channels_folders = []
             channel_name = channel.keys()[0]
             current_channel = channel[channel_name]
-
-            for folder in current_channel:
-                folder = folder.replace("\\\\", "\\")
-                channels_folders.append(folder)
+            channels_folders = [folder.replace("\\\\", "\\") for folder in current_channel]
             modes_channels.append(channels_folders)
         video_data.append(modes_channels)
 
@@ -108,11 +102,3 @@ def load_channel_data():
     load_mode_channel_names(channel_json)
     load_folders(channel_json)
     print("Success -- Channel Data Loaded")
-
-if __name__ == "__main__":
-    load_channel_data()
-    print(mode_names)
-    print()
-    print(channel_names)
-    print()
-    print(video_data)

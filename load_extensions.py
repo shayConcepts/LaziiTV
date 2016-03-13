@@ -12,8 +12,8 @@ def load_file_extensions():
     """
     Loads file extensions from file_extensions.json
 
-    Returns:
-    List of file extensions
+    :return: List of file extensions
+    :rtype: list
     """
 
     json_string = open("file_extensions.json", "r").read()
@@ -24,7 +24,3 @@ def load_file_extensions():
     print("\tSuccess -- File Extensions Loaded")
 
     return file_extensions
-
-if __name__ == "__main__":
-    extensions = load_file_extensions()
-    print(extensions)

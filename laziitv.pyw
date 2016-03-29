@@ -182,6 +182,10 @@ class Player(wx.Frame):
         print("Playing first channel on first mode")
         self.play(0, 0)
 
+        # Don't start the timer until the first video has started
+        while self.player.is_playing() == 0:
+            pass
+
         # Check when video has finished
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.check_video_finished, self.timer)
